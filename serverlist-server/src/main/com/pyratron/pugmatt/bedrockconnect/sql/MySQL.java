@@ -1,13 +1,6 @@
 package com.pyratron.pugmatt.bedrockconnect.sql;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-
-
+import java.sql.*;
 
 
 /**
@@ -27,14 +20,10 @@ public class MySQL extends Database {
     /**
      * Creates a new MySQL instance
      *
-     * @param hostname
-     *            Name of the host
-     * @param database
-     *            Database name
-     * @param username
-     *            Username
-     * @param password
-     *            Password
+     * @param hostname Name of the host
+     * @param database Database name
+     * @param username Username
+     * @param password Password
      */
     public MySQL(String hostname, String database, String username, String password) {
         this.hostname = hostname;

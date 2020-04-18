@@ -1,32 +1,24 @@
 package com.pyratron.pugmatt.bedrockconnect;
 
 import com.nukkitx.math.vector.Vector2f;
+import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.CompoundTagBuilder;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.ListTag;
-import com.nukkitx.protocol.bedrock.Bedrock;
-import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
-import com.nukkitx.protocol.bedrock.data.Attribute;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.*;
-import com.nukkitx.math.vector.Vector3f;
 import com.pyratron.pugmatt.bedrockconnect.gui.UIComponents;
 import com.pyratron.pugmatt.bedrockconnect.sql.Data;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PipePlayer {
 
@@ -51,7 +43,7 @@ public class PipePlayer {
             }
 
             EMPTY_LEVEL_CHUNK_DATA = outputStream.toByteArray();
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new AssertionError("Unable to generate empty level chunk data");
         }
     }
@@ -99,8 +91,8 @@ public class PipePlayer {
         mp.setRuntimeEntityId(1);
         mp.setOnGround(false);
         mp.setMode(MovePlayerPacket.Mode.NORMAL);
-        mp.setRotation(Vector3f.from(0,0,0));
-        mp.setPosition(Vector3f.from(0,0,0));
+        mp.setRotation(Vector3f.from(0, 0, 0));
+        mp.setPosition(Vector3f.from(0, 0, 0));
         session.sendPacket(mp);
 
         StartGamePacket startGamePacket = new StartGamePacket();

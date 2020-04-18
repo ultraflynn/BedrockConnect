@@ -1,8 +1,6 @@
 package com.pyratron.pugmatt.bedrockconnect.sql;
 
-import com.nukkitx.protocol.bedrock.Bedrock;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
-import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.pyratron.pugmatt.bedrockconnect.BedrockConnect;
 import com.pyratron.pugmatt.bedrockconnect.PipePlayer;
 import com.pyratron.pugmatt.bedrockconnect.gui.UIComponents;
@@ -12,7 +10,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +25,7 @@ public class Data {
     public Data(String serverLimit) {
         this.serverLimit = serverLimit;
 
-        if(!BedrockConnect.noDB) {
+        if (!BedrockConnect.noDB) {
             try {
                 createTables();
             } catch (Exception e) {
@@ -50,24 +47,23 @@ public class Data {
         stmt.execute(sqlCreate);
     }
 
-    public void Basic_SQL(final String query){
+    public void Basic_SQL(final String query) {
         new Thread(() -> {
-                try {
-                    PreparedStatement statement = BedrockConnect.connection.prepareStatement(query);
-                    statement.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            try {
+                PreparedStatement statement = BedrockConnect.connection.prepareStatement(query);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+        }
         ).start();
     }
 
     public PipePlayer getPlayer(ResultSet rs, String uuid, BedrockServerSession session) {
         try {
-            PipePlayer p = new PipePlayer(uuid,this, session, UIComponents.getFormData(rs.getString("servers")), rs.getInt("serverLimit"));
+            PipePlayer p = new PipePlayer(uuid, this, session, UIComponents.getFormData(rs.getString("servers")), rs.getInt("serverLimit"));
             return p;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             errorAlert(e);
             return null;
         }
@@ -75,7 +71,7 @@ public class Data {
 
     // If user exists
     public void userExists(String uuid, String name, BedrockServerSession session) {
-        if(!BedrockConnect.noDB) {
+        if (!BedrockConnect.noDB) {
             Data db = this;
             new Thread(() -> {
                 try {
@@ -130,7 +126,7 @@ public class Data {
 
                     JSONArray servers = (JSONArray) jo.get("servers");
 
-                    PipePlayer p = new PipePlayer(uuid,this, session, servers, serverLimit);
+                    PipePlayer p = new PipePlayer(uuid, this, session, servers, serverLimit);
                     BedrockConnect.server.addPlayer(p);
                 }
             } catch (Exception e) {
@@ -140,28 +136,24 @@ public class Data {
         }
     }
 
-    public void addNewUser(String uuid, String name, BedrockServerSession session)
-    {
+    public void addNewUser(String uuid, String name, BedrockServerSession session) {
         Data db = this;
         new Thread(() -> {
-                try
-                {
-                    PreparedStatement s = BedrockConnect.connection.prepareStatement("INSERT INTO servers (uuid, name, serverLimit) VALUES ('" + uuid + "', '" + name + "', 10)");
-                    s.executeUpdate();
-                    System.out.println("[BedrockConnect] Added new user '" + name + "' (" + uuid + ") to Database.");
-                    PipePlayer pl = new PipePlayer(uuid, db, session, new ArrayList<>(), Integer.parseInt(serverLimit));
-                    BedrockConnect.server.addPlayer(pl);
-                }
-                catch (Exception e)
-                {
-                    errorAlert(e);
-                    session.disconnect("We had some trouble receiving your player data. Please report this to the BedrockConnect discord.");
-                }
+            try {
+                PreparedStatement s = BedrockConnect.connection.prepareStatement("INSERT INTO servers (uuid, name, serverLimit) VALUES ('" + uuid + "', '" + name + "', 10)");
+                s.executeUpdate();
+                System.out.println("[BedrockConnect] Added new user '" + name + "' (" + uuid + ") to Database.");
+                PipePlayer pl = new PipePlayer(uuid, db, session, new ArrayList<>(), Integer.parseInt(serverLimit));
+                BedrockConnect.server.addPlayer(pl);
+            } catch (Exception e) {
+                errorAlert(e);
+                session.disconnect("We had some trouble receiving your player data. Please report this to the BedrockConnect discord.");
+            }
         }).start();
     }
 
     public void setValueString(String column, String value, List<String> serverList, String uuid) {
-        if(!BedrockConnect.noDB) {
+        if (!BedrockConnect.noDB) {
             new Thread(() -> {
                 try {
                     Basic_SQL("UPDATE servers SET " + column + "='" + value + "' WHERE uuid='" + uuid + "'");
@@ -190,14 +182,11 @@ public class Data {
 
     public void setValueInt(String column, Integer value, String uuid) {
         new Thread(() -> {
-                try
-                {
-                    Basic_SQL("UPDATE servers SET " + column + "=" + value + " WHERE uuid='" + uuid + "'");
-                }
-                catch (Exception e)
-                {
-                    errorAlert(e);
-                }
+            try {
+                Basic_SQL("UPDATE servers SET " + column + "=" + value + " WHERE uuid='" + uuid + "'");
+            } catch (Exception e) {
+                errorAlert(e);
+            }
         }).start();
     }
 

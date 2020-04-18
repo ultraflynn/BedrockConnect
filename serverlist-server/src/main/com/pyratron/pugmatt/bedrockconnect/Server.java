@@ -7,7 +7,6 @@ import com.nukkitx.protocol.bedrock.*;
 import com.pyratron.pugmatt.bedrockconnect.listeners.PacketHandler;
 import com.pyratron.pugmatt.bedrockconnect.sql.Data;
 
-
 import javax.annotation.Nonnull;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ public class Server {
 
     public boolean recordingDone = false;
     public List<BedrockPacket> packets = new ArrayList<>();
-
 
 
     public int getProtocol() {
@@ -43,8 +41,8 @@ public class Server {
     }
 
     public PipePlayer getPlayer(String uuid) {
-        for(int i=0;i<players.size();i++) {
-            if(players.get(i).getUuid() == uuid)
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getUuid() == uuid)
                 return players.get(i);
         }
         return null;
@@ -87,10 +85,12 @@ public class Server {
             public boolean onConnectionRequest(InetSocketAddress address) {
                 return true; // Connection will be accepted
             }
+
             @Nonnull
             public BedrockPong onQuery(InetSocketAddress address) {
                 return pong;
             }
+
             @Override
             public void onSessionCreation(BedrockServerSession session) {
                 session.setPacketHandler(new PacketHandler(session, current));

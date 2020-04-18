@@ -1,10 +1,8 @@
 package com.pyratron.pugmatt.bedrockconnect.listeners;
 
 import com.nukkitx.protocol.bedrock.BedrockClientSession;
-import com.nukkitx.protocol.bedrock.packet.*;
-
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import com.nukkitx.protocol.bedrock.packet.LoginPacket;
+import com.nukkitx.protocol.bedrock.packet.*;
 
 public class ClientPacketHandler implements BedrockPacketHandler {
 
@@ -407,11 +405,12 @@ public class ClientPacketHandler implements BedrockPacketHandler {
         return false;
     }
 
-    /** @Override
-    public boolean handle(FullChunkDataPacket packet) {
-        System.out.println(packet.toString());
-        return false;
-    } **/
+    /**
+     * @Override public boolean handle(FullChunkDataPacket packet) {
+     * System.out.println(packet.toString());
+     * return false;
+     * }
+     **/
 
     @Override
     public boolean handle(GameRulesChangedPacket packet) {

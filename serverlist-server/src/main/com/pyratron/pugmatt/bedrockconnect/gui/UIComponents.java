@@ -2,8 +2,6 @@ package com.pyratron.pugmatt.bedrockconnect.gui;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.nukkitx.protocol.bedrock.packet.ModalFormRequestPacket;
-import net.minidev.json.JSONUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -41,7 +39,7 @@ public class UIComponents {
         JsonObject button = new JsonObject();
         button.addProperty("type", "button");
         button.addProperty("text", text);
-        if(image != null && imageType != null) {
+        if (image != null && imageType != null) {
             JsonObject buttonImage = new JsonObject();
             buttonImage.addProperty("type", imageType);
             buttonImage.addProperty("data", image);
@@ -84,7 +82,7 @@ public class UIComponents {
         JsonObject dropdown = new JsonObject();
         dropdown.addProperty("type", "dropdown");
         JsonArray servers = new JsonArray();
-        for(int i=0;i<options.size();i++) {
+        for (int i = 0; i < options.size(); i++) {
             servers.add(options.get(i));
         }
         dropdown.add("options", servers);
@@ -95,9 +93,9 @@ public class UIComponents {
 
     public static String serversToFormData(List<String> list) {
         String listString = "[";
-        for(int i=0;i<list.size();i++) {
+        for (int i = 0; i < list.size(); i++) {
             listString += '"' + list.get(i) + '"';
-            if(i != list.size()-1)
+            if (i != list.size() - 1)
                 listString += ",";
         }
         listString += "]";
@@ -108,17 +106,17 @@ public class UIComponents {
         JSONParser parser = new JSONParser();
 
         // If no server data
-        if(data == null)
+        if (data == null)
             return new ArrayList<>();
 
         try {
             JSONArray obj = (JSONArray) parser.parse(data);
             ArrayList<String> strings = new ArrayList<>();
-            for(int i=0;i<obj.size();i++) {
+            for (int i = 0; i < obj.size(); i++) {
                 strings.add(obj.get(i).toString());
             }
             return strings;
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             System.out.println(e.toString());
         }
 

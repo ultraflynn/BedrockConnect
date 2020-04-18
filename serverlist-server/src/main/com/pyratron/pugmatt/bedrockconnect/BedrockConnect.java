@@ -3,17 +3,21 @@ package com.pyratron.pugmatt.bedrockconnect;
 import com.pyratron.pugmatt.bedrockconnect.sql.Data;
 import com.pyratron.pugmatt.bedrockconnect.sql.MySQL;
 import com.pyratron.pugmatt.bedrockconnect.utils.PaletteManager;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
-import java.io.*;
-import java.net.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BedrockConnect {
 
@@ -30,7 +34,7 @@ public class BedrockConnect {
 
     public static void main(String[] args) {
         System.out.println("-= BedrockConnect =-");
-        paletteManager =  new PaletteManager();
+        paletteManager = new PaletteManager();
 
         try {
             String hostname = "localhost";
@@ -41,22 +45,22 @@ public class BedrockConnect {
 
             String serverLimit = "100";
 
-            for(String str : args) {
-                if(str.startsWith("mysql_host="))
+            for (String str : args) {
+                if (str.startsWith("mysql_host="))
                     hostname = getArgValue(str, "mysql_host");
-                if(str.startsWith("mysql_db="))
+                if (str.startsWith("mysql_db="))
                     database = getArgValue(str, "mysql_db");
-                if(str.startsWith("mysql_user="))
+                if (str.startsWith("mysql_user="))
                     username = getArgValue(str, "mysql_user");
-                if(str.startsWith("mysql_pass="))
+                if (str.startsWith("mysql_pass="))
                     password = getArgValue(str, "mysql_pass");
-                if(str.startsWith("server_limit="))
+                if (str.startsWith("server_limit="))
                     serverLimit = getArgValue(str, "server_limit");
-                if(str.startsWith("port="))
+                if (str.startsWith("port="))
                     port = getArgValue(str, "port");
-                if(str.startsWith("nodb="))
+                if (str.startsWith("nodb="))
                     noDB = true;
-                if(str.startsWith("generatedns=")) {
+                if (str.startsWith("generatedns=")) {
                     String ip;
                     try {
                         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -69,10 +73,10 @@ public class BedrockConnect {
                                 continue;
 
                             Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                            while(addresses.hasMoreElements()) {
+                            while (addresses.hasMoreElements()) {
                                 InetAddress addr = addresses.nextElement();
 
-                                if(!(addr instanceof Inet4Address)) continue;
+                                if (!(addr instanceof Inet4Address)) continue;
 
                                 ip = addr.getHostAddress();
                                 System.out.println(iface.getDisplayName() + ": " + ip);
@@ -81,7 +85,7 @@ public class BedrockConnect {
 
                         Scanner reader = new Scanner(System.in);  // Reading from System.in
                         System.out.print("\nWhich IP should be used for the DNS records: ");
-                        String selectedIP = reader.next().replaceAll("\\s+","");
+                        String selectedIP = reader.next().replaceAll("\\s+", "");
                         reader.close();
 
                         BufferedWriter br = new BufferedWriter(new FileWriter(new File("bc_dns.conf")));
@@ -102,14 +106,14 @@ public class BedrockConnect {
                 }
             }
 
-            if(!noDB)
-            System.out.println("MySQL Host: " + hostname + "\n" +
-            "MySQL Database: " + database + "\n" +
-            "MySQL User: " + username);
+            if (!noDB)
+                System.out.println("MySQL Host: " + hostname + "\n" +
+                        "MySQL Database: " + database + "\n" +
+                        "MySQL User: " + username);
 
             System.out.println("\nServer Limit: " + serverLimit + "\n" + "Port: " + port + "\n");
 
-            if(!noDB) {
+            if (!noDB) {
                 MySQL = new MySQL(hostname, database, username, password);
 
                 connection = null;
@@ -156,6 +160,7 @@ public class BedrockConnect {
                 Timer timer = new Timer();
                 TimerTask task = new TimerTask() {
                     int sec;
+
                     public void run() {
                         sec++;
                     }
@@ -164,7 +169,7 @@ public class BedrockConnect {
             }
 
             server = new Server(port);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

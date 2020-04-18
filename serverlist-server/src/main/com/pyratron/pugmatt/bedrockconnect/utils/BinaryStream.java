@@ -191,183 +191,182 @@ public class BinaryStream {
         this.put(new byte[]{b});
     }
 
-     /** public void putEntityLink(PEEntityLink link) {
-        putVarLong(link.riding);
-        putVarLong(link.rider);
-        putByte(link.type);
-        putByte(link.unknownByte);
-    }
+    /** public void putEntityLink(PEEntityLink link) {
+     putVarLong(link.riding);
+     putVarLong(link.rider);
+     putByte(link.type);
+     putByte(link.unknownByte);
+     }
 
-//    public PEEntityLink getEntityLink() {
-//        return new PEEntityLink(
-//                getVarLong(),
-//                getVarLong(),
-//                getByte(),
-//                getByte());
-//    }
+     //    public PEEntityLink getEntityLink() {
+     //        return new PEEntityLink(
+     //                getVarLong(),
+     //                getVarLong(),
+     //                getByte(),
+     //                getByte());
+     //    }
 
-    public Map<String, GameRule> getGameRules() {
-        int count = (int) getUnsignedVarInt();
-        Map<String, GameRule> rules = new HashMap<>();
-        for (int i = 0; i < count; i++) {
-            GameRule rule = GameRule.read(this);
-            rules.put(rule.name, rule);
-        }
-        return rules;
-    }
+     public Map<String, GameRule> getGameRules() {
+     int count = (int) getUnsignedVarInt();
+     Map<String, GameRule> rules = new HashMap<>();
+     for (int i = 0; i < count; i++) {
+     GameRule rule = GameRule.read(this);
+     rules.put(rule.name, rule);
+     }
+     return rules;
+     }
 
-    public void putGameRules(Map<String, GameRule> rules) {
-        if (rules == null) {
-            putUnsignedVarInt(0);
-            return;
-        }
-        putUnsignedVarInt(rules.size());
-        for (GameRule rule : rules.values()) {
-            rule.write(this);
-        }
-    }
+     public void putGameRules(Map<String, GameRule> rules) {
+     if (rules == null) {
+     putUnsignedVarInt(0);
+     return;
+     }
+     putUnsignedVarInt(rules.size());
+     for (GameRule rule : rules.values()) {
+     rule.write(this);
+     }
+     }
 
-    public float getByteRotation() {
-        return (((float) (getByte() & 0xFF)) * (360 / 256));
-    }
+     public float getByteRotation() {
+     return (((float) (getByte() & 0xFF)) * (360 / 256));
+     }
 
-    public void putByteRotation(float rotation) {
-        putByte((byte) (((int) (rotation / (360 / 256))) & 0xFF));
-    }
+     public void putByteRotation(float rotation) {
+     putByte((byte) (((int) (rotation / (360 / 256))) & 0xFF));
+     }
 
-    /**
+     /**
      * Reads a list of Attributes from the stream.
      *
      * @return Attribute[]
      */
+    /**
+     public PEEntityAttribute[] getAttributeList() throws Exception {
+     List<PEEntityAttribute> list = new ArrayList<>();
+     long count = this.getUnsignedVarInt();
+
+     for (int i = 0; i < count; ++i) {
+     String name = this.getString();
+     PEEntityAttribute attr = PEEntityAttribute.findAttribute(name);
+     if (attr != null) {
+     attr.min = getLFloat();
+     attr.currentValue = getLFloat();
+     attr.max = this.getLFloat();
+     list.add(attr);
+     } else {
+     throw new Exception("Unknown attribute type \"" + name + "\"");
+     }
+     }
+
+     return list.stream().toArray(PEEntityAttribute[]::new);
+     }
      /**
-    public PEEntityAttribute[] getAttributeList() throws Exception {
-        List<PEEntityAttribute> list = new ArrayList<>();
-        long count = this.getUnsignedVarInt();
 
-        for (int i = 0; i < count; ++i) {
-            String name = this.getString();
-            PEEntityAttribute attr = PEEntityAttribute.findAttribute(name);
-            if (attr != null) {
-                attr.min = getLFloat();
-                attr.currentValue = getLFloat();
-                attr.max = this.getLFloat();
-                list.add(attr);
-            } else {
-                throw new Exception("Unknown attribute type \"" + name + "\"");
-            }
-        }
-
-        return list.stream().toArray(PEEntityAttribute[]::new);
-    }
-    /**
-
-    /**
+     /**
      * Writes a list of Attributes to the packet buffer using the standard
      * format.
      */
     /**
-    public void putAttributeList(PEEntityAttribute[] attributes) {
-        this.putUnsignedVarInt(attributes.length);
-        for (PEEntityAttribute attribute : attributes) {
-            this.putString(attribute.name);
-            this.putLFloat(attribute.min);
-            this.putLFloat(attribute.currentValue);
-            this.putLFloat(attribute.max);
-        }
-    }
-
-    public void putUUID(UUID uuid) {
-        this.put(Binary.writeUUID(uuid));
-    }
-
-    public UUID getUUID() {
-        return Binary.readUUID(this.get(16));
-    }
-
-    public void putSkin(Skin skin) {
-        this.putString(skin.getModel());
-        this.putByteArray(skin.getData());
-        this.putByteArray(skin.getCape().getData());
-    }
-
-    public Skin getSkin() {
-        String modelId = this.getString();
-        byte[] skinData = this.getByteArray();
-        return new Skin(skinData, modelId);
-    }
-
-    public Slot getSlot() {
-        int id = this.getVarInt();
-
-        if (id <= 0) {
-            return Slot.AIR;
-        }
-        int auxValue = this.getVarInt();
-        int data = auxValue >> 8;
-        if (data == Short.MAX_VALUE) {
-            data = -1;
-        }
-        int cnt = auxValue & 0xff;
-
-        int nbtLen = this.getLShort();
-        byte[] nbt;
-        CompoundTag tag = null;
-        if (nbtLen > 0) {
-            nbt = this.get(nbtLen);
-            try {
-                tag = NBTIO.read(nbt, ByteOrder.LITTLE_ENDIAN, false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // TODO
-        int canPlaceOn = this.getVarInt();
-        if (canPlaceOn > 0) {
-            for (int i = 0; i < canPlaceOn; ++i) {
-                this.getString();
-            }
-        }
-
-        // TODO
-        int canDestroy = this.getVarInt();
-        if (canDestroy > 0) {
-            for (int i = 0; i < canDestroy; ++i) {
-                this.getString();
-            }
-        }
-
-        return new Slot(id, data, cnt, tag);
-    }
-
-    public void putSlot(Slot item) {
-        if (item == null || item.id == 0) {
-            this.putVarInt(0);
-            return;
-        }
-
-        this.putVarInt(item.id);
-        int auxValue = ((item.damage & 0x7fff) << 8) | item.count;
-        this.putVarInt(auxValue);
-        byte[] nbt;
-        if (item.tag != null) {
-            try {
-                nbt = NBTIO.write(item.tag, ByteOrder.LITTLE_ENDIAN, false);
-            } catch (IOException e) {
-                e.printStackTrace();
-                nbt = new byte[0];
-            }
-        } else {
-            nbt = new byte[0];
-        }
-        this.putLShort(nbt.length);
-        this.put(nbt);
-        this.putVarInt(0); // TODO CanPlaceOn entry count
-        this.putVarInt(0); // TODO CanDestroy entry count
-    }
-
-    **/
+     * public void putAttributeList(PEEntityAttribute[] attributes) {
+     * this.putUnsignedVarInt(attributes.length);
+     * for (PEEntityAttribute attribute : attributes) {
+     * this.putString(attribute.name);
+     * this.putLFloat(attribute.min);
+     * this.putLFloat(attribute.currentValue);
+     * this.putLFloat(attribute.max);
+     * }
+     * }
+     * <p>
+     * public void putUUID(UUID uuid) {
+     * this.put(Binary.writeUUID(uuid));
+     * }
+     * <p>
+     * public UUID getUUID() {
+     * return Binary.readUUID(this.get(16));
+     * }
+     * <p>
+     * public void putSkin(Skin skin) {
+     * this.putString(skin.getModel());
+     * this.putByteArray(skin.getData());
+     * this.putByteArray(skin.getCape().getData());
+     * }
+     * <p>
+     * public Skin getSkin() {
+     * String modelId = this.getString();
+     * byte[] skinData = this.getByteArray();
+     * return new Skin(skinData, modelId);
+     * }
+     * <p>
+     * public Slot getSlot() {
+     * int id = this.getVarInt();
+     * <p>
+     * if (id <= 0) {
+     * return Slot.AIR;
+     * }
+     * int auxValue = this.getVarInt();
+     * int data = auxValue >> 8;
+     * if (data == Short.MAX_VALUE) {
+     * data = -1;
+     * }
+     * int cnt = auxValue & 0xff;
+     * <p>
+     * int nbtLen = this.getLShort();
+     * byte[] nbt;
+     * CompoundTag tag = null;
+     * if (nbtLen > 0) {
+     * nbt = this.get(nbtLen);
+     * try {
+     * tag = NBTIO.read(nbt, ByteOrder.LITTLE_ENDIAN, false);
+     * } catch (IOException e) {
+     * e.printStackTrace();
+     * }
+     * }
+     * <p>
+     * // TODO
+     * int canPlaceOn = this.getVarInt();
+     * if (canPlaceOn > 0) {
+     * for (int i = 0; i < canPlaceOn; ++i) {
+     * this.getString();
+     * }
+     * }
+     * <p>
+     * // TODO
+     * int canDestroy = this.getVarInt();
+     * if (canDestroy > 0) {
+     * for (int i = 0; i < canDestroy; ++i) {
+     * this.getString();
+     * }
+     * }
+     * <p>
+     * return new Slot(id, data, cnt, tag);
+     * }
+     * <p>
+     * public void putSlot(Slot item) {
+     * if (item == null || item.id == 0) {
+     * this.putVarInt(0);
+     * return;
+     * }
+     * <p>
+     * this.putVarInt(item.id);
+     * int auxValue = ((item.damage & 0x7fff) << 8) | item.count;
+     * this.putVarInt(auxValue);
+     * byte[] nbt;
+     * if (item.tag != null) {
+     * try {
+     * nbt = NBTIO.write(item.tag, ByteOrder.LITTLE_ENDIAN, false);
+     * } catch (IOException e) {
+     * e.printStackTrace();
+     * nbt = new byte[0];
+     * }
+     * } else {
+     * nbt = new byte[0];
+     * }
+     * this.putLShort(nbt.length);
+     * this.put(nbt);
+     * this.putVarInt(0); // TODO CanPlaceOn entry count
+     * this.putVarInt(0); // TODO CanDestroy entry count
+     * }
+     **/
 
 
     public byte[] getByteArray() {
@@ -421,49 +420,49 @@ public class BinaryStream {
     }
 
     /**
-    public BlockPosition getBlockPosition() {
-        return new BlockPosition(this.getVarInt(), (int) this.getUnsignedVarInt(), this.getVarInt());
-    }
-
-    public BlockPosition getSignedBlockPosition() {
-        return new BlockPosition(getVarInt(), getVarInt(), getVarInt());
-    }
-
-    public void putSignedBlockPosition(BlockPosition v) {
-        putVarInt(v.x);
-        putVarInt(v.y);
-        putVarInt(v.z);
-    }
-
-    public void putBlockPosition(BlockPosition v) {
-        this.putBlockPosition(v.x, v.y, v.z);
-    }
-
-    public void putBlockPosition(int x, int y, int z) {
-        this.putVarInt(x);
-        this.putUnsignedVarInt(y);
-        this.putVarInt(z);
-    }
-
-    public Vector3F getVector3F() {
-        return new Vector3F(this.getLFloat(4), this.getLFloat(4), this.getLFloat(4));
-    }
-
-    public void putVector3F(Vector3F v) {
-        if (v == null) {
-            this.putVector3F(0f, 0f, 0f);
-        } else {
-            this.putVector3F(v.x, v.y, v.z);
-        }
-    }
-
-    public void putVector3F(float x, float y, float z) {
-        this.putLFloat(Math.round(x * 10000f) / 10000f);
-        this.putLFloat(Math.round(y * 10000f) / 10000f);
-        this.putLFloat(Math.round(z * 10000f) / 10000f);
-    }
-
-    /**
+     * public BlockPosition getBlockPosition() {
+     * return new BlockPosition(this.getVarInt(), (int) this.getUnsignedVarInt(), this.getVarInt());
+     * }
+     * <p>
+     * public BlockPosition getSignedBlockPosition() {
+     * return new BlockPosition(getVarInt(), getVarInt(), getVarInt());
+     * }
+     * <p>
+     * public void putSignedBlockPosition(BlockPosition v) {
+     * putVarInt(v.x);
+     * putVarInt(v.y);
+     * putVarInt(v.z);
+     * }
+     * <p>
+     * public void putBlockPosition(BlockPosition v) {
+     * this.putBlockPosition(v.x, v.y, v.z);
+     * }
+     * <p>
+     * public void putBlockPosition(int x, int y, int z) {
+     * this.putVarInt(x);
+     * this.putUnsignedVarInt(y);
+     * this.putVarInt(z);
+     * }
+     * <p>
+     * public Vector3F getVector3F() {
+     * return new Vector3F(this.getLFloat(4), this.getLFloat(4), this.getLFloat(4));
+     * }
+     * <p>
+     * public void putVector3F(Vector3F v) {
+     * if (v == null) {
+     * this.putVector3F(0f, 0f, 0f);
+     * } else {
+     * this.putVector3F(v.x, v.y, v.z);
+     * }
+     * }
+     * <p>
+     * public void putVector3F(float x, float y, float z) {
+     * this.putLFloat(Math.round(x * 10000f) / 10000f);
+     * this.putLFloat(Math.round(y * 10000f) / 10000f);
+     * this.putLFloat(Math.round(z * 10000f) / 10000f);
+     * }
+     * <p>
+     * /**
      * Reads and returns an EntityUniqueID
      *
      * @return int

@@ -4,8 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.nukkitx.protocol.bedrock.packet.ModalFormRequestPacket;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UIForms {
@@ -25,7 +23,7 @@ public class UIForms {
 
         buttons.add(UIComponents.createButton("Connect to a Server"));
         buttons.add(UIComponents.createButton("Remove a Server"));
-        for(int i=0;i<servers.size();i++) {
+        for (int i = 0; i < servers.size(); i++) {
             buttons.add(UIComponents.createButton(servers.get(i), "https://i.imgur.com/3BmFZRE.png", "url"));
         }
         buttons.add(UIComponents.createButton("The Hive", "https://forum.playhive.com/uploads/default/original/1X/0d05e3240037f7592a0f16b11b57c08eba76f19c.png", "url"));
@@ -66,7 +64,7 @@ public class UIForms {
 
         JsonArray inputs = new JsonArray();
 
-        inputs.add(UIComponents.createDropdown(servers,"Servers", "0"));
+        inputs.add(UIComponents.createDropdown(servers, "Servers", "0"));
 
         out.add("content", inputs);
         mf.setFormData(out.toString());

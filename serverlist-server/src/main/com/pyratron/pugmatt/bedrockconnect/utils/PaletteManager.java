@@ -1,25 +1,16 @@
 package com.pyratron.pugmatt.bedrockconnect.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.nukkitx.nbt.CompoundTagBuilder;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.ListTag;
-import com.nukkitx.network.VarInts;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import com.pyratron.pugmatt.bedrockconnect.BedrockConnect;
+import io.netty.buffer.ByteBuf;
 
-import java.io.*;
-import java.nio.ByteOrder;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // https://github.com/DragonetMC/DragonProxy/blob/rewrite/proxy/src/main/java/org/dragonet/proxy/util/PaletteManager.java
@@ -62,7 +53,8 @@ public class PaletteManager {
         @JsonProperty("data")
         private int data;
 
-        public RuntimeEntry() {}
+        public RuntimeEntry() {
+        }
 
         public RuntimeEntry(String name, int id, int data) {
             this.id = id;
