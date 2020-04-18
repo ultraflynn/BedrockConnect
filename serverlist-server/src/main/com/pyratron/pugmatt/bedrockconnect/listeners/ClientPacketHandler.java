@@ -1,4 +1,4 @@
-package main.com.pyratron.pugmatt.bedrockconnect.listeners;
+package com.pyratron.pugmatt.bedrockconnect.listeners;
 
 import com.nukkitx.protocol.bedrock.BedrockClientSession;
 import com.nukkitx.protocol.bedrock.packet.*;

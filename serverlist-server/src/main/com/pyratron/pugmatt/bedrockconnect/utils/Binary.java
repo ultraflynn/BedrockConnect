@@ -1,6 +1,6 @@
-package main.com.pyratron.pugmatt.bedrockconnect.utils;
+package com.pyratron.pugmatt.bedrockconnect.utils;
 
-import main.com.pyratron.pugmatt.bedrockconnect.utils.math.NukkitMath;
+import com.pyratron.pugmatt.bedrockconnect.utils.math.NukkitMath;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;

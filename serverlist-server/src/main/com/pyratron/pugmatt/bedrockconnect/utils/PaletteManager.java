@@ -1,4 +1,4 @@
-package main.com.pyratron.pugmatt.bedrockconnect.utils;
+package com.pyratron.pugmatt.bedrockconnect.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import main.com.pyratron.pugmatt.bedrockconnect.BedrockConnect;
+import com.pyratron.pugmatt.bedrockconnect.BedrockConnect;
 
 import java.io.*;
 import java.nio.ByteOrder;

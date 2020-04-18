@@ -1,8 +1,8 @@
-package main.com.pyratron.pugmatt.bedrockconnect;
+package com.pyratron.pugmatt.bedrockconnect;
 
-import main.com.pyratron.pugmatt.bedrockconnect.sql.Data;
-import main.com.pyratron.pugmatt.bedrockconnect.sql.MySQL;
-import main.com.pyratron.pugmatt.bedrockconnect.utils.PaletteManager;
+import com.pyratron.pugmatt.bedrockconnect.sql.Data;
+import com.pyratron.pugmatt.bedrockconnect.sql.MySQL;
+import com.pyratron.pugmatt.bedrockconnect.utils.PaletteManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

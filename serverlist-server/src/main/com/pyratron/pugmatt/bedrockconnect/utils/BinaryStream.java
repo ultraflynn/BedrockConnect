@@ -1,4 +1,4 @@
-package main.com.pyratron.pugmatt.bedrockconnect.utils;
+package com.pyratron.pugmatt.bedrockconnect.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package main.com.pyratron.pugmatt.bedrockconnect.listeners;
+package com.pyratron.pugmatt.bedrockconnect.listeners;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
@@ -20,10 +20,10 @@ import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.LoginPacket;
 import com.nukkitx.protocol.bedrock.util.EncryptionUtils;
-import main.com.pyratron.pugmatt.bedrockconnect.BedrockConnect;
-import main.com.pyratron.pugmatt.bedrockconnect.Server;
-import main.com.pyratron.pugmatt.bedrockconnect.gui.UIComponents;
-import main.com.pyratron.pugmatt.bedrockconnect.gui.UIForms;
+import com.pyratron.pugmatt.bedrockconnect.BedrockConnect;
+import com.pyratron.pugmatt.bedrockconnect.Server;
+import com.pyratron.pugmatt.bedrockconnect.gui.UIComponents;
+import com.pyratron.pugmatt.bedrockconnect.gui.UIForms;
 import net.minidev.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;

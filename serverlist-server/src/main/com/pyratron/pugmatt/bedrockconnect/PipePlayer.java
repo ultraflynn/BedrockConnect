@@ -1,4 +1,4 @@
-package main.com.pyratron.pugmatt.bedrockconnect;
+package com.pyratron.pugmatt.bedrockconnect;
 
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3i;
@@ -17,8 +17,8 @@ import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.math.vector.Vector3f;
-import main.com.pyratron.pugmatt.bedrockconnect.gui.UIComponents;
-import main.com.pyratron.pugmatt.bedrockconnect.sql.Data;
+import com.pyratron.pugmatt.bedrockconnect.gui.UIComponents;
+import com.pyratron.pugmatt.bedrockconnect.sql.Data;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

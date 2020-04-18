@@ -1,4 +1,4 @@
-package main.com.pyratron.pugmatt.bedrockconnect.utils;
+package com.pyratron.pugmatt.bedrockconnect.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

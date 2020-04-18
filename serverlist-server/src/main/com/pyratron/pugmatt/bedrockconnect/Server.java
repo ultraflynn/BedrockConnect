@@ -1,11 +1,11 @@
-package main.com.pyratron.pugmatt.bedrockconnect;
+package com.pyratron.pugmatt.bedrockconnect;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.nukkitx.protocol.bedrock.*;
-import main.com.pyratron.pugmatt.bedrockconnect.listeners.PacketHandler;
-import main.com.pyratron.pugmatt.bedrockconnect.sql.Data;
+import com.pyratron.pugmatt.bedrockconnect.listeners.PacketHandler;
+import com.pyratron.pugmatt.bedrockconnect.sql.Data;
 
 
 import javax.annotation.Nonnull;
